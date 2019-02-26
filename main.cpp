@@ -18,7 +18,6 @@ bool openFileOut(ofstream& ofs, const string& fileName);
 vector<string> codes; // codes must be unique
 
 int main() {
-    const string filename = "items.csv";
     string name, price, numOnHand, code, warning, age;
     ostringstream oss;
     ofstream ofs;
@@ -26,8 +25,22 @@ int main() {
     int length;
     bool validCode = false;
     bool validAge = false;
-    bool validNumOnHand = false;
     bool validPrice = false;
+    bool fileStatus;
+    bool validFileName = false;
+
+    string filename;
+    
+    do {
+        cout << "Enter output file name: ";
+        getline(cin, filename);
+        if(filename == "") {
+            cerr << "File name cannot be empty." << endl;
+        } else {
+            validFileName = true;
+        }
+    } while(!validFileName);
+
     for(int i = 0; i < BOUND; i++) {
         length = 5 + (rand() % ( 20 - 5 + 1 ) );
         name = random_string(length);
@@ -46,7 +59,6 @@ int main() {
     }
     
     for(int i = 0; i < BOUND; i++) {
-        validAge = false;
 
         length = 5 + (rand() % ( 20 - 5 + 1 ) );
         name = random_string(length);
@@ -118,14 +130,22 @@ int main() {
         }
         oss << "warn," << warning << "," << name << "," << price << "," << numOnHand << "," << code << endl;
     }    
-    bool fileStatus = openFileOut(ofs, filename);
-    ofs << oss.str();
+    do {
+        fileStatus = openFileOut(ofs, filename);
+        cout << "Attempting to write items to " << filename << "..." << endl;
+        if(!fileStatus) {
+            cerr << "Error writing to file " << filename << endl;
+        } else {
+            cout << "Success." << endl;
+            ofs << oss.str();
+        }
+    } while(!fileStatus);
+        
     return 0;
 }// end main()
 
 string random_string(string::size_type length) {
     static auto& chrs =
-        "abcdefghijklmnopqrstuvwxyz"
         "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
     thread_local static mt19937 rg{random_device{}()};
