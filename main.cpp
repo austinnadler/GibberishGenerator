@@ -29,7 +29,7 @@ int main() {
     bool validNumOnHand = false;
     bool validPrice = false;
     for(int i = 0; i < BOUND; i++) {
-        length = rand() % 20 + 5;
+        length = 5 + (rand() % ( 20 - 5 + 1 ) );
         name = random_string(length);
         length = rand() % 4 + 1;
         price = random_stringofint(length);
@@ -48,7 +48,7 @@ int main() {
     for(int i = 0; i < BOUND; i++) {
         validAge = false;
 
-        length = rand() % 20 + 5;
+        length = 5 + (rand() % ( 20 - 5 + 1 ) );
         name = random_string(length);
 
         length = rand() % 4 + 1;
@@ -67,7 +67,7 @@ int main() {
         length = rand() % 4 + 1;
         numOnHand = random_stringofint(length);
 
-        length = rand() % 21;
+        length = rand() % 21 + 5;
         warning = random_string(length);
 
         length = rand() % 2 + 1;
@@ -85,7 +85,7 @@ int main() {
     for(int i = 0; i < BOUND; i++) {
         validAge = false;
 
-        length = rand() % 20 + 5;
+        length = 5 + (rand() % ( 20 - 5 + 1 ) );
         name = random_string(length);
 
         length = rand() % 4 + 1;
@@ -104,7 +104,7 @@ int main() {
         length = rand() % 4 + 1;
         numOnHand = random_stringofint(length);
 
-        length = rand() % 21;
+        length = rand() % 21 + 5;
         warning = random_string(length);
 
         length = rand() % 20 + 1;
