@@ -24,6 +24,7 @@ int main() {
     openFileOut(ofs, "guesses.txt");
     do {
         string randomString = random_string(input.length());
+        ofs << randomString << endl;
         tries++;
         if(randomString == input) {
             cout << "Guess #" << tries << ": " << randomString << endl;
