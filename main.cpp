@@ -45,9 +45,6 @@ int main() {
         last = random_string(5);
         for(int i = 0; i < 10; i++ ) {
             h[i] = rand() % filler + minGrade;
-        }      
-        for(int i = 0; i < 10; i++ ) {
-            q[i] = rand() % filler + minGrade;
         }
         for(int i = 0; i < 10; i++ ) {
             l[i] = rand() % filler + minGrade;
@@ -60,7 +57,7 @@ int main() {
         } 
         f = rand() % filler * 10 + minGrade * 10;
 
-        people[cnt++] = Person(first, last, h, q, l, p, t, f);
+        people[cnt++] = Person(first, last, h, l, p, t, f);
     } while(cnt < 60);
 
     for(int i = 0; i < 60; i++) {

@@ -15,7 +15,6 @@ private:
     static const int numT = 2;
     string first, last;
     int h[numHQL]; // 10 hw
-    int q[numHQL]; // 10 quizzes
     int l[numHQL]; // 10 labs
     int p[numP];  // 6 projects
     int t[numT];  // 2 tests
@@ -25,13 +24,15 @@ public:
         first = "first";
     }
 
-    Person(string& first, string& last, int h[], int q[], int l[], int p[], int t[], int& f) {
+    Person(string& first, string& last, int h[], int l[], int p[], int t[], int& f) {
         this->first = first;
         this->last = last;
         for(int i = 0; i < numHQL; i++) {
             this->h[i] = h[i];
-            this->q[i] = q[i];
             this->l[i] = l[i];
+        }
+        for(int i = 0; i < 6; i++) {
+            this->p[i] = p[i];
         }
         for(int i = 0; i < 2; i++) {
             this->t[i] = t[i];
@@ -44,9 +45,6 @@ public:
         oss << first << " " << last << " ";
         for(int i = 0; i < 10; i++) {
             oss << h[i] << " ";
-        }
-        for(int i = 0; i < 10; i++) {
-            oss << q[i] << " ";
         }
         for(int i = 0; i < 6; i++) {
             oss << p[i] << " ";
