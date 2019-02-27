@@ -7,146 +7,78 @@
 #include <vector>
 #include <stdexcept>
 #include <fstream>
+#include "person.h";
 using namespace std;
 
 string random_string(string::size_type length);
 string random_stringofint(string::size_type length);
-bool codeAv(string& code);
 bool openFileOut(ofstream& ofs, const string& fileName);
 
 
 vector<string> codes; // codes must be unique
 
 int main() {
-    string name, price, numOnHand, code, warning, age;
-    ostringstream oss;
+    string filename = "data.txt";
     ofstream ofs;
-    const int BOUND = 500;
-    int length;
-    bool validCode = false;
-    bool validAge = false;
-    bool validPrice = false;
-    bool fileStatus;
-    bool validFileName = false;
+    string first;
+    string last;
+    // Decided everyone gets at least 60% on everything to make grades seem more realistic looking
+    int minGrade = 6;
+    int filler = 10 - minGrade;
+    int h[10]; // 10 hw
+    int q[10]; // 10 quizzes
+    int l[10]; // 10 labs
+    int p[6];  // 6 projects
+    int t[2];  // 2 tests
+    int f;     // 1 final exam
+    int cnt = 0;
+    bool fileOpen = openFileOut(ofs, filename);
+    Person people[60];
 
-    string filename;
-    
-    do {
-        cout << "Enter output file name: ";
-        getline(cin, filename);
-        if(filename == "") {
-            cerr << "File name cannot be empty." << endl;
-        } else {
-            validFileName = true;
-        }
-    } while(!validFileName);
-
-    for(int i = 0; i < BOUND; i++) {
-        length = 5 + (rand() % ( 20 - 5 + 1 ) );
-        name = random_string(length);
-        length = rand() % 4 + 1;
-        price = random_stringofint(length);
-        length = rand() % 4 + 1;
-        numOnHand = random_stringofint(length);
-        do {
-            code = random_stringofint(5);
-            validCode = codeAv(code);
-        } while(!validCode);
-        if(validCode) {
-            codes.push_back(code);
-        }
-        oss << "gm," << name << "," << price << "," << numOnHand << "," << code << endl;
-    }
-    
-    for(int i = 0; i < BOUND; i++) {
-
-        length = 5 + (rand() % ( 20 - 5 + 1 ) );
-        name = random_string(length);
-
-        length = rand() % 4 + 1;
-        do {
-            try {
-                price = random_stringofint(length);
-                if(stoi(price) > 0) {
-                    validPrice = true;
-                }
-            } catch(invalid_argument e) {
-                validPrice = false;
-            }
-            
-        } while(!validPrice);
-        
-        length = rand() % 4 + 1;
-        numOnHand = random_stringofint(length);
-
-        length = rand() % 21 + 5;
-        warning = random_string(length);
-
-        length = rand() % 2 + 1;
-        age = random_stringofint(length);
-        do {
-            code = random_stringofint(5);
-            validCode = codeAv(code);
-        } while(!validCode);
-        if(validCode) {
-            codes.push_back(code);
-        }
-        oss << "ar," << age << "," << name << "," << price << "," << numOnHand << "," << code << endl;
+    if(!fileOpen) {
+        cerr << "Error creating file: " << filename << endl;
+        exit(1);
     }
 
-    for(int i = 0; i < BOUND; i++) {
-        validAge = false;
-
-        length = 5 + (rand() % ( 20 - 5 + 1 ) );
-        name = random_string(length);
-
-        length = rand() % 4 + 1;
-        do {
-            try {
-                price = random_stringofint(length);
-                if(stoi(price) > 0) {
-                    validPrice = true;
-                }
-            } catch(invalid_argument e) {
-                validPrice = false;
-            }
-            
-        } while(!validPrice);
-        
-        length = rand() % 4 + 1;
-        numOnHand = random_stringofint(length);
-
-        length = rand() % 21 + 5;
-        warning = random_string(length);
-
-        length = rand() % 20 + 1;
-        warning = random_string(length);
-        do {
-            code = random_stringofint(5);
-            validCode = codeAv(code);
-        } while(!validCode);
-        if(validCode) {
-            codes.push_back(code);
-        }
-        oss << "warn," << warning << "," << name << "," << price << "," << numOnHand << "," << code << endl;
-    }    
     do {
-        fileStatus = openFileOut(ofs, filename);
-        cout << "Attempting to write items to " << filename << "..." << endl;
-        if(!fileStatus) {
-            cerr << "Error writing to file " << filename << endl;
-        } else {
-            cout << "Success." << endl;
-            ofs << oss.str();
+        first = random_string(5);
+        last = random_string(5);
+        for(int i = 0; i < 10; i++ ) {
+            h[i] = rand() % filler + minGrade;
+        }      
+        for(int i = 0; i < 10; i++ ) {
+            q[i] = rand() % filler + minGrade;
         }
-    } while(!fileStatus);
-        
-    return 0;
+        for(int i = 0; i < 10; i++ ) {
+            l[i] = rand() % filler + minGrade;
+        }
+        for(int i = 0; i < 6; i++ ) {
+            p[i] = rand() % filler * 10 + minGrade * 10;
+        }
+        for(int i = 0; i < 2; i++ ) {
+            t[i] = rand() % filler * 10 + minGrade * 10;
+        } 
+        f = rand() % filler * 10 + minGrade * 10;
+
+        people[cnt++] = Person(first, last, h, q, l, p, t, f);
+    } while(cnt < 60);
+
+    for(int i = 0; i < 60; i++) {
+        ofs << people[i].toStringLecture() << endl;
+    }
+
+    ofs << endl;
+    ofs << endl;
+
+    for(int i = 0; i < 60; i++) {
+        ofs << people[i].toStringLab() << endl;
+    }
+    
 }// end main()
 
 string random_string(string::size_type length) {
     static auto& chrs =
-        "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 
     thread_local static mt19937 rg{random_device{}()};
     thread_local static uniform_int_distribution<string::size_type> pick(0, sizeof(chrs) - 2);
