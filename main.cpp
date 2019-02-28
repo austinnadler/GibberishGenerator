@@ -11,7 +11,6 @@
 using namespace std;
 
 string random_string(string::size_type length);
-string random_stringofint(string::size_type length);
 bool openFileOut(ofstream& ofs, const string& fileName);
 
 
@@ -39,7 +38,7 @@ int main() {
         cerr << "Error creating file: " << filename << endl;
         exit(1);
     }
-
+    srand(time(0));
     do {
         first = random_string(5);
         last = random_string(5);
@@ -49,13 +48,15 @@ int main() {
         for(int i = 0; i < 10; i++ ) {
             l[i] = rand() % filler + minGrade;
         }
-        for(int i = 0; i < 6; i++ ) {
-            p[i] = rand() % filler * 10 + minGrade * 10;
+        for(int i = 0; i < 6; i++ ) {     
+            // 50 - 100
+            int grade = (rand() % filler * 10 + minGrade * 10) + (rand() % 9 + 1);
+            p[i] = grade;
         }
         for(int i = 0; i < 2; i++ ) {
-            t[i] = rand() % filler * 10 + minGrade * 10;
+            t[i] = (rand() % filler * 10 + minGrade * 10) + (rand() % 9 + 1);
         } 
-        f = rand() % filler * 10 + minGrade * 10;
+        f = (rand() % filler * 10 + minGrade * 10) + (rand() % 9 + 1);
 
         people[cnt++] = Person(first, last, h, l, p, t, f);
     } while(cnt < 60);
@@ -76,23 +77,6 @@ int main() {
 string random_string(string::size_type length) {
     static auto& chrs =
         "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-
-    thread_local static mt19937 rg{random_device{}()};
-    thread_local static uniform_int_distribution<string::size_type> pick(0, sizeof(chrs) - 2);
-
-    string s;
-
-    s.reserve(length);
-
-    while(length--)
-        s += chrs[pick(rg)];
-
-    return s;
-}
-
-string random_stringofint(string::size_type length) {
-    static auto& chrs =
-        "123456789";
 
     thread_local static mt19937 rg{random_device{}()};
     thread_local static uniform_int_distribution<string::size_type> pick(0, sizeof(chrs) - 2);
